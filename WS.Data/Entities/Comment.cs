@@ -7,7 +7,7 @@ namespace WS.Data.Entities
     public class Comment
     {
         public string IdComment { get; set; }
-        public string IdUser { get; set; }
+        public Guid IdUser { get; set; }
         public User User { get; set; }
         public string IdStory { get; set; }
         public Story Story { get; set; }

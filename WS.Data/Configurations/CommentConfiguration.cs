@@ -11,6 +11,7 @@ namespace WS.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
+            builder.ToTable("Comments");
             builder.HasKey(x => x.IdComment);
             builder.HasOne(x => x.User).WithMany(x => x.Comments).HasForeignKey(x => x.IdUser);
             builder.HasOne(x => x.Story).WithMany(x => x.Comments).HasForeignKey(x => x.IdStory);
