@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using WS.Data.Configurations;
 using WS.Data.Entities;
+using WS.Data.Extensions;
 
 namespace WS.Data.EF
 {
@@ -26,14 +27,15 @@ namespace WS.Data.EF
         // Specify DbSet properties etc
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Configure Fluent API
             base.OnModelCreating(modelBuilder);
             // add your own configuration here
+            modelBuilder.ApplyConfiguration(new TopicConfiguration());
             modelBuilder.ApplyConfiguration(new ChapterConfiguration());
             modelBuilder.ApplyConfiguration(new StoryConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new TopicConfiguration());
             
             modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("UserClaims");
             modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("UserLogins");
@@ -41,6 +43,21 @@ namespace WS.Data.EF
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
 
+            //DataSeeding
+            // modelBuilder.Entity<Topic>().HasData(
+            //     new Topic() {
+            //         IdTopic = Guid.NewGuid().ToString(), 
+            //         NameTopic = "Tiên hiệp"
+            //     },
+            //     new Topic() {
+            //         IdTopic = Guid.NewGuid().ToString(), 
+            //         NameTopic = "Kiếm hiệp"
+            //     },
+            //     new Topic() {
+            //         IdTopic = Guid.NewGuid().ToString(), 
+            //         NameTopic = "Ngôn tình"
+            //     });
+            modelBuilder.Seed();
 
         }
 
