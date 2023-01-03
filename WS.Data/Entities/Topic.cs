@@ -11,5 +11,7 @@ namespace WS.Data.Entities
         public string IdTopic { get; set; }
 
         public string NameTopic { get; set; }
+
+        public List<TopicInStory> ListTopicInStory { get; set; }
     }
 }

@@ -13,7 +13,8 @@ namespace WS.Data.Entities
         public string Author { get; set; }
 
         public string Collector { get; set; }
-        public List<Topic> ListTopic { get; set; }
+        public List<TopicInStory> ListTopicInStory { get; set; }
+        public List<UserLikeStory> UserLikeStories {get; set;}
         public List<Chapter> Chapters { get; set; }
         
         public List<Comment> Comments { get; set; }

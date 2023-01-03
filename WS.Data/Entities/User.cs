@@ -12,8 +12,8 @@ namespace WS.Data.Entities
         public DateTime CreateDate { get; set; }
         public string PhotoFileName { get; set; }
         public string Country { get; set; }
-        public List<Story> ListStoryLike { get; set; }
-        public List<Chapter> ListChapterHistory { get; set; }
+        public List<UserLikeStory> UserLikeStories { get; set; }
+        public List<UserHistoryChapter> UserHistoryChapters { get; set; }
 
 
        

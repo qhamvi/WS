@@ -20,5 +20,7 @@ namespace WS.Data.Entities
 
         public string Content { get; set; }
 
+        public List<UserHistoryChapter> UserHistoryChapters { get; set; }
+
     }
 }

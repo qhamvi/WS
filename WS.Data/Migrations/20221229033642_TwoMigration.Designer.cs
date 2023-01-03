@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WS.Data.EF;
 
 namespace WS.Data.Migrations
 {
     [DbContext(typeof(WSDbContext))]
-    partial class WSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221229033642_TwoMigration")]
+    partial class TwoMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,40 +147,16 @@ namespace WS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("IdChapter");
 
                     b.HasIndex("IdStory");
 
-                    b.ToTable("Chapters");
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            IdChapter = new Guid("b964e204-3d89-4478-b993-c5e2df10b214"),
-                            Collector = "Nguoi suu tam",
-                            Content = "Noi dung",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(6806),
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            TitleChap = "Tieu de chap 1"
-                        },
-                        new
-                        {
-                            IdChapter = new Guid("27cddef8-0ff7-47eb-952c-4ff5706a190e"),
-                            Collector = "Nguoi suu tam",
-                            Content = "Noi dung",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(8502),
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            TitleChap = "Tieu de chap 2"
-                        },
-                        new
-                        {
-                            IdChapter = new Guid("9a660bb4-8913-4a7c-abc3-b85ffab71500"),
-                            Collector = "Nguoi suu tam",
-                            Content = "Noi dung",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(8580),
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            TitleChap = "Tieu de chap 3"
-                        });
+                    b.ToTable("Chapters");
                 });
 
             modelBuilder.Entity("WS.Data.Entities.Comment", b =>
@@ -278,53 +256,14 @@ namespace WS.Data.Migrations
                     b.Property<string>("TitleStory")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("IdStory");
 
-                    b.ToTable("Stories");
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            Author = "Tac gia",
-                            Collector = "Nguoi suu tam",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 339, DateTimeKind.Local).AddTicks(9099),
-                            ImageFileName = "null.jpg",
-                            IsAcept = true,
-                            IsComplete = false,
-                            NumberChap = 0,
-                            PublishDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(4046),
-                            Summary = "Tom tat",
-                            TitleStory = "Tieu de truyen 3"
-                        },
-                        new
-                        {
-                            IdStory = "c7f95997-e1e6-4714-bf21-c4ac5d3ac4b2",
-                            Author = "Tac gia 2",
-                            Collector = "Nguoi suu tam 2",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5453),
-                            ImageFileName = "null.jpg",
-                            IsAcept = true,
-                            IsComplete = false,
-                            NumberChap = 0,
-                            PublishDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5478),
-                            Summary = "Tom tat 2",
-                            TitleStory = "Tieu de truyen 3"
-                        },
-                        new
-                        {
-                            IdStory = "0c162623-fda4-46a3-b647-d8dd7a60b21c",
-                            Author = "Tac gia 3",
-                            Collector = "Nguoi suu tam 3",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5517),
-                            ImageFileName = "null.jpg",
-                            IsAcept = true,
-                            IsComplete = false,
-                            NumberChap = 0,
-                            PublishDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5519),
-                            Summary = "Tom tat 3",
-                            TitleStory = "Tieu de truyen 3"
-                        });
+                    b.ToTable("Stories");
                 });
 
             modelBuilder.Entity("WS.Data.Entities.Topic", b =>
@@ -339,18 +278,6 @@ namespace WS.Data.Migrations
                     b.HasKey("IdTopic");
 
                     b.ToTable("Topics");
-
-                    b.HasData(
-                        new
-                        {
-                            IdTopic = "3c7d4dfd-8fdc-4bf5-8fe8-1c33afd8eb7a",
-                            NameTopic = "Tien hiep"
-                        },
-                        new
-                        {
-                            IdTopic = "2959b043-e266-4397-ba66-0beef768c72b",
-                            NameTopic = "Kiem hiep"
-                        });
                 });
 
             modelBuilder.Entity("WS.Data.Entities.TopicInStory", b =>
@@ -365,7 +292,7 @@ namespace WS.Data.Migrations
 
                     b.HasIndex("IdTopic");
 
-                    b.ToTable("TopicInStory");
+                    b.ToTable("TopicInStorys");
                 });
 
             modelBuilder.Entity("WS.Data.Entities.User", b =>
@@ -448,36 +375,6 @@ namespace WS.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("WS.Data.Entities.UserHistoryChapter", b =>
-                {
-                    b.Property<Guid>("IdUser")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdChapter")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("IdUser", "IdChapter");
-
-                    b.HasIndex("IdChapter");
-
-                    b.ToTable("UserHistoryChapters");
-                });
-
-            modelBuilder.Entity("WS.Data.Entities.UserLikeStory", b =>
-                {
-                    b.Property<Guid>("IdUser")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("IdStory")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("IdUser", "IdStory");
-
-                    b.HasIndex("IdStory");
-
-                    b.ToTable("UserLikeStories");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("WS.Data.Entities.Role", null)
@@ -534,6 +431,10 @@ namespace WS.Data.Migrations
                     b.HasOne("WS.Data.Entities.Story", "Story")
                         .WithMany("Chapters")
                         .HasForeignKey("IdStory");
+
+                    b.HasOne("WS.Data.Entities.User", null)
+                        .WithMany("ListChapterHistory")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WS.Data.Entities.Comment", b =>
@@ -549,6 +450,13 @@ namespace WS.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WS.Data.Entities.Story", b =>
+                {
+                    b.HasOne("WS.Data.Entities.User", null)
+                        .WithMany("ListStoryLike")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("WS.Data.Entities.TopicInStory", b =>
                 {
                     b.HasOne("WS.Data.Entities.Story", "Story")
@@ -560,36 +468,6 @@ namespace WS.Data.Migrations
                     b.HasOne("WS.Data.Entities.Topic", "Topic")
                         .WithMany("ListTopicInStory")
                         .HasForeignKey("IdTopic")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WS.Data.Entities.UserHistoryChapter", b =>
-                {
-                    b.HasOne("WS.Data.Entities.Chapter", "Chapter")
-                        .WithMany("UserHistoryChapters")
-                        .HasForeignKey("IdChapter")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WS.Data.Entities.User", "User")
-                        .WithMany("UserHistoryChapters")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("WS.Data.Entities.UserLikeStory", b =>
-                {
-                    b.HasOne("WS.Data.Entities.Story", "Story")
-                        .WithMany("UserLikeStories")
-                        .HasForeignKey("IdStory")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WS.Data.Entities.User", "User")
-                        .WithMany("UserLikeStories")
-                        .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

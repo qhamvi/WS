@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WS.Data.EF;
 
 namespace WS.Data.Migrations
 {
     [DbContext(typeof(WSDbContext))]
-    partial class WSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221229091747_UpdateSeed_V2")]
+    partial class UpdateSeed_V2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,35 +152,6 @@ namespace WS.Data.Migrations
                     b.HasIndex("IdStory");
 
                     b.ToTable("Chapters");
-
-                    b.HasData(
-                        new
-                        {
-                            IdChapter = new Guid("b964e204-3d89-4478-b993-c5e2df10b214"),
-                            Collector = "Nguoi suu tam",
-                            Content = "Noi dung",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(6806),
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            TitleChap = "Tieu de chap 1"
-                        },
-                        new
-                        {
-                            IdChapter = new Guid("27cddef8-0ff7-47eb-952c-4ff5706a190e"),
-                            Collector = "Nguoi suu tam",
-                            Content = "Noi dung",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(8502),
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            TitleChap = "Tieu de chap 2"
-                        },
-                        new
-                        {
-                            IdChapter = new Guid("9a660bb4-8913-4a7c-abc3-b85ffab71500"),
-                            Collector = "Nguoi suu tam",
-                            Content = "Noi dung",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(8580),
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
-                            TitleChap = "Tieu de chap 3"
-                        });
                 });
 
             modelBuilder.Entity("WS.Data.Entities.Comment", b =>
@@ -285,43 +258,43 @@ namespace WS.Data.Migrations
                     b.HasData(
                         new
                         {
-                            IdStory = "28887e0e-b47b-44b5-bce7-274658f14c31",
+                            IdStory = "71986825-6c09-41f5-90ea-fc38b53aba60",
                             Author = "Tac gia",
                             Collector = "Nguoi suu tam",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 339, DateTimeKind.Local).AddTicks(9099),
+                            CreateDate = new DateTime(2022, 12, 29, 16, 17, 46, 993, DateTimeKind.Local).AddTicks(526),
                             ImageFileName = "null.jpg",
                             IsAcept = true,
                             IsComplete = false,
                             NumberChap = 0,
-                            PublishDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(4046),
+                            PublishDate = new DateTime(2022, 12, 29, 16, 17, 46, 995, DateTimeKind.Local).AddTicks(1048),
                             Summary = "Tom tat",
                             TitleStory = "Tieu de truyen 3"
                         },
                         new
                         {
-                            IdStory = "c7f95997-e1e6-4714-bf21-c4ac5d3ac4b2",
+                            IdStory = "75ff666d-203c-4f7f-9745-b4ef51434610",
                             Author = "Tac gia 2",
                             Collector = "Nguoi suu tam 2",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5453),
+                            CreateDate = new DateTime(2022, 12, 29, 16, 17, 46, 995, DateTimeKind.Local).AddTicks(3026),
                             ImageFileName = "null.jpg",
                             IsAcept = true,
                             IsComplete = false,
                             NumberChap = 0,
-                            PublishDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5478),
+                            PublishDate = new DateTime(2022, 12, 29, 16, 17, 46, 995, DateTimeKind.Local).AddTicks(3056),
                             Summary = "Tom tat 2",
                             TitleStory = "Tieu de truyen 3"
                         },
                         new
                         {
-                            IdStory = "0c162623-fda4-46a3-b647-d8dd7a60b21c",
+                            IdStory = "55b5d8aa-0557-484e-85b4-96715d6d8bde",
                             Author = "Tac gia 3",
                             Collector = "Nguoi suu tam 3",
-                            CreateDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5517),
+                            CreateDate = new DateTime(2022, 12, 29, 16, 17, 46, 995, DateTimeKind.Local).AddTicks(3109),
                             ImageFileName = "null.jpg",
                             IsAcept = true,
                             IsComplete = false,
                             NumberChap = 0,
-                            PublishDate = new DateTime(2022, 12, 29, 16, 19, 53, 341, DateTimeKind.Local).AddTicks(5519),
+                            PublishDate = new DateTime(2022, 12, 29, 16, 17, 46, 995, DateTimeKind.Local).AddTicks(3112),
                             Summary = "Tom tat 3",
                             TitleStory = "Tieu de truyen 3"
                         });
@@ -343,12 +316,12 @@ namespace WS.Data.Migrations
                     b.HasData(
                         new
                         {
-                            IdTopic = "3c7d4dfd-8fdc-4bf5-8fe8-1c33afd8eb7a",
+                            IdTopic = "395fc0ad-7d66-4757-95dd-be92639b74f0",
                             NameTopic = "Tien hiep"
                         },
                         new
                         {
-                            IdTopic = "2959b043-e266-4397-ba66-0beef768c72b",
+                            IdTopic = "c8acf3b5-afb3-40f4-8743-3f4341e486dd",
                             NameTopic = "Kiem hiep"
                         });
                 });
