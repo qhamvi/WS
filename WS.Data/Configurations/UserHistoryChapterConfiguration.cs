@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WS.Data.Entities;
 
 namespace WS.Data.Configurations
@@ -12,7 +12,7 @@ namespace WS.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<UserHistoryChapter> builder)
         {
-            builder.HasKey(t => new { t.IdUser, t.IdChapter });
+            builder.HasKey(t => new { t.IdUser, t.IdChapter});
 
             builder.ToTable("UserHistoryChapters");
 

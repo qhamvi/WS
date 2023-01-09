@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using WS.Data.Configurations;
 using WS.Data.Entities;
-using WS.Data.Extensions;
 
 namespace WS.Data.EF
 {
@@ -22,9 +21,6 @@ namespace WS.Data.EF
         public DbSet<Comment> Comments { get; set; }
         public override DbSet<User> Users { get; set; }
         public override DbSet<Role> Roles { get; set; }
-        public DbSet<TopicInStory> TopicInStories { get; set; }
-        public DbSet<UserHistoryChapter> UserHistoryChapters { get; set; }
-        public DbSet<UserLikeStory> UserLikeStories { get; set; }
 
 
         // Specify DbSet properties etc
@@ -48,7 +44,7 @@ namespace WS.Data.EF
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("UserTokens");
 
-            modelBuilder.DataSeed();
+
         }
 
     }
