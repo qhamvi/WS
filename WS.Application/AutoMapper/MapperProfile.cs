@@ -12,7 +12,8 @@ namespace WS.Application.AutoMapper
     {
         public MapperProfile()
         {
-            CreateMap<Topic, TopicViewModel>();
+            CreateMap<Topic, TopicViewModel>().
+                ForMember(v => v.TopicName, a => a.MapFrom(v => v.NameTopic));
         }
     }
 }

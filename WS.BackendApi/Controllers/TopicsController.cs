@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 using System.Threading.Tasks;
 using WS.Application.TopicService;
 using WS.Application.TopicService.Dtos;
@@ -23,7 +24,8 @@ namespace WS.BackendApi.Controllers
         //    return Ok("Test OK");
         //}
         [HttpGet]
-
+        [ProducesResponseType(typeof(IEnumerable), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetListAsync([FromQuery] ListTopicRequest request)
         {
             var data = await _service.GetAll(request);
