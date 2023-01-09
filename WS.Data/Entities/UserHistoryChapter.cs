@@ -11,7 +11,7 @@ namespace WS.Data.Entities
 
         public User User { get; set; }
 
-        public string IdChapter { get; set; }
+        public Guid IdChapter { get; set; }
 
         public Chapter Chapter { get; set; }
     }

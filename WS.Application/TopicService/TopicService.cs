@@ -57,6 +57,8 @@ namespace WS.Application.TopicService
             }
             //paging
             int totalRow = await query.CountAsync();
+            request.Page = 1;
+            request.PageSize = 10;
             
             var data = query.Skip((request.Page - 1)* request.PageSize).Take(request.PageSize);
             //select and projection

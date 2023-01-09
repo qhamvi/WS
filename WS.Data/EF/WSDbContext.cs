@@ -16,7 +16,7 @@ namespace WS.Data.EF
             
         }
         public DbSet<Topic> Topics { get; set; }    
-        public DbSet<Comment> Chapters { get;set; }
+        //public DbSet<Chapter> Chapters { get;set; }
         public DbSet<Story> Stories { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public override DbSet<User> Users { get; set; }
