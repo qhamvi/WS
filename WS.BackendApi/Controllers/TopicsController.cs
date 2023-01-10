@@ -28,8 +28,14 @@ namespace WS.BackendApi.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetListAsync([FromQuery] ListTopicRequest request)
         {
-            var data = await _service.GetAll(request);
-            return Ok(data);
+            if (ModelState.IsValid is true)
+            {
+                var data = await _service.GetAll(request);
+                return Ok(data);
+            }
+            else
+                return BadRequest();
+            
         }
 
         [HttpPost]

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks; 
 using WS.Application.TopicService;
+using WS.Application.UserService;
 using WS.Data.EF;
+using WS.Data.Entities;
 
 namespace WS.BackendApi
 {
@@ -29,10 +32,20 @@ namespace WS.BackendApi
         {
             services.AddDbContext<WSDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("WSDatabase")));
+
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<WSDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //Declare DI
 
             services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<UserManager<User>, UserManager<User>>();
+            services.AddTransient<SignInManager<User>, SignInManager<User>>();
+            services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
+            services.AddTransient<IUserService, UserService>();
+
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
             services.AddControllersWithViews();

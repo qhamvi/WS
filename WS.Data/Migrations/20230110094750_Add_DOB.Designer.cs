@@ -10,8 +10,8 @@ using WS.Data.EF;
 namespace WS.Data.Migrations
 {
     [DbContext(typeof(WSDbContext))]
-    [Migration("20221229033642_TwoMigration")]
-    partial class TwoMigration
+    [Migration("20230110094750_Add_DOB")]
+    partial class Add_DOB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,14 +147,9 @@ namespace WS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("IdChapter");
 
                     b.HasIndex("IdStory");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Chapters");
                 });
@@ -256,12 +251,7 @@ namespace WS.Data.Migrations
                     b.Property<string>("TitleStory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("IdStory");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Stories");
                 });
@@ -292,7 +282,7 @@ namespace WS.Data.Migrations
 
                     b.HasIndex("IdTopic");
 
-                    b.ToTable("TopicInStorys");
+                    b.ToTable("TopicInStory");
                 });
 
             modelBuilder.Entity("WS.Data.Entities.User", b =>
@@ -313,6 +303,9 @@ namespace WS.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DOB")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -375,6 +368,36 @@ namespace WS.Data.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("WS.Data.Entities.UserHistoryChapter", b =>
+                {
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdChapter")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("IdUser", "IdChapter");
+
+                    b.HasIndex("IdChapter");
+
+                    b.ToTable("UserHistoryChapters");
+                });
+
+            modelBuilder.Entity("WS.Data.Entities.UserLikeStory", b =>
+                {
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("IdStory")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("IdUser", "IdStory");
+
+                    b.HasIndex("IdStory");
+
+                    b.ToTable("UserLikeStories");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("WS.Data.Entities.Role", null)
@@ -431,10 +454,6 @@ namespace WS.Data.Migrations
                     b.HasOne("WS.Data.Entities.Story", "Story")
                         .WithMany("Chapters")
                         .HasForeignKey("IdStory");
-
-                    b.HasOne("WS.Data.Entities.User", null)
-                        .WithMany("ListChapterHistory")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WS.Data.Entities.Comment", b =>
@@ -450,13 +469,6 @@ namespace WS.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WS.Data.Entities.Story", b =>
-                {
-                    b.HasOne("WS.Data.Entities.User", null)
-                        .WithMany("ListStoryLike")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("WS.Data.Entities.TopicInStory", b =>
                 {
                     b.HasOne("WS.Data.Entities.Story", "Story")
@@ -468,6 +480,36 @@ namespace WS.Data.Migrations
                     b.HasOne("WS.Data.Entities.Topic", "Topic")
                         .WithMany("ListTopicInStory")
                         .HasForeignKey("IdTopic")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WS.Data.Entities.UserHistoryChapter", b =>
+                {
+                    b.HasOne("WS.Data.Entities.Chapter", "Chapter")
+                        .WithMany("UserHistoryChapters")
+                        .HasForeignKey("IdChapter")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WS.Data.Entities.User", "User")
+                        .WithMany("UserHistoryChapters")
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WS.Data.Entities.UserLikeStory", b =>
+                {
+                    b.HasOne("WS.Data.Entities.Story", "Story")
+                        .WithMany("UserLikeStories")
+                        .HasForeignKey("IdStory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WS.Data.Entities.User", "User")
+                        .WithMany("UserLikeStories")
+                        .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

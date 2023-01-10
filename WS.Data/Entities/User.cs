@@ -10,6 +10,7 @@ namespace WS.Data.Entities
         public List<Comment> Comments { get; set; } 
         public string FullName { get; set; }
         public DateTime CreateDate { get; set; }
+        public DateTime DOB { get; set; }
         public string PhotoFileName { get; set; }
         public string Country { get; set; }
         public List<UserLikeStory> UserLikeStories { get; set; }

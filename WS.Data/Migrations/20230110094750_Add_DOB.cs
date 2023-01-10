@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WS.Data.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class Add_DOB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,39 @@ namespace WS.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stories",
+                columns: table => new
+                {
+                    IdStory = table.Column<string>(nullable: false),
+                    TitleStory = table.Column<string>(nullable: true),
+                    Author = table.Column<string>(nullable: false),
+                    Collector = table.Column<string>(nullable: false),
+                    IsComplete = table.Column<bool>(nullable: false),
+                    IsAcept = table.Column<bool>(nullable: false),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    PublishDate = table.Column<DateTime>(nullable: true),
+                    ImageFileName = table.Column<string>(nullable: false),
+                    NumberChap = table.Column<int>(nullable: false),
+                    Summary = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stories", x => x.IdStory);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Topics",
+                columns: table => new
+                {
+                    IdTopic = table.Column<string>(nullable: false),
+                    NameTopic = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Topics", x => x.IdTopic);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,6 +75,7 @@ namespace WS.Data.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    DOB = table.Column<DateTime>(nullable: false),
                     PhotoFileName = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: false)
                 },
@@ -72,31 +106,77 @@ namespace WS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stories",
+                name: "Chapters",
                 columns: table => new
                 {
-                    IdStory = table.Column<string>(nullable: false),
-                    TitleStory = table.Column<string>(nullable: true),
-                    Author = table.Column<string>(nullable: false),
+                    IdChapter = table.Column<Guid>(nullable: false),
+                    TitleChap = table.Column<string>(nullable: false),
+                    IdStory = table.Column<string>(nullable: true),
                     Collector = table.Column<string>(nullable: false),
-                    IsComplete = table.Column<bool>(nullable: false),
-                    IsAcept = table.Column<bool>(nullable: false),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    PublishDate = table.Column<DateTime>(nullable: true),
-                    ImageFileName = table.Column<string>(nullable: false),
-                    NumberChap = table.Column<int>(nullable: false),
-                    Summary = table.Column<string>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
+                    Content = table.Column<string>(maxLength: 1000, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stories", x => x.IdStory);
+                    table.PrimaryKey("PK_Chapters", x => x.IdChapter);
                     table.ForeignKey(
-                        name: "FK_Stories_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Chapters_Stories_IdStory",
+                        column: x => x.IdStory,
+                        principalTable: "Stories",
+                        principalColumn: "IdStory",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TopicInStory",
+                columns: table => new
+                {
+                    IdTopic = table.Column<string>(nullable: false),
+                    IdStory = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TopicInStory", x => new { x.IdStory, x.IdTopic });
+                    table.ForeignKey(
+                        name: "FK_TopicInStory_Stories_IdStory",
+                        column: x => x.IdStory,
+                        principalTable: "Stories",
+                        principalColumn: "IdStory",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TopicInStory_Topics_IdTopic",
+                        column: x => x.IdTopic,
+                        principalTable: "Topics",
+                        principalColumn: "IdTopic",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    IdComment = table.Column<string>(nullable: false),
+                    IdUser = table.Column<Guid>(nullable: false),
+                    IdStory = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: false),
+                    DateCom = table.Column<DateTime>(nullable: false),
+                    UpdateCom = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.IdComment);
+                    table.ForeignKey(
+                        name: "FK_Comments_Stories_IdStory",
+                        column: x => x.IdStory,
+                        principalTable: "Stories",
+                        principalColumn: "IdStory",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_IdUser",
+                        column: x => x.IdUser,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,6 +195,30 @@ namespace WS.Data.Migrations
                     table.ForeignKey(
                         name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLikeStories",
+                columns: table => new
+                {
+                    IdUser = table.Column<Guid>(nullable: false),
+                    IdStory = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLikeStories", x => new { x.IdUser, x.IdStory });
+                    table.ForeignKey(
+                        name: "FK_UserLikeStories_Stories_IdStory",
+                        column: x => x.IdStory,
+                        principalTable: "Stories",
+                        principalColumn: "IdStory",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserLikeStories_Users_IdUser",
+                        column: x => x.IdUser,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -185,90 +289,33 @@ namespace WS.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chapters",
+                name: "UserHistoryChapters",
                 columns: table => new
                 {
-                    IdChapter = table.Column<Guid>(nullable: false),
-                    TitleChap = table.Column<string>(nullable: false),
-                    IdStory = table.Column<string>(nullable: true),
-                    Collector = table.Column<string>(nullable: false),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Content = table.Column<string>(maxLength: 1000, nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Chapters", x => x.IdChapter);
-                    table.ForeignKey(
-                        name: "FK_Chapters_Stories_IdStory",
-                        column: x => x.IdStory,
-                        principalTable: "Stories",
-                        principalColumn: "IdStory",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Chapters_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
-                {
-                    IdComment = table.Column<string>(nullable: false),
                     IdUser = table.Column<Guid>(nullable: false),
-                    IdStory = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: false),
-                    DateCom = table.Column<DateTime>(nullable: false),
-                    UpdateCom = table.Column<DateTime>(nullable: false)
+                    IdChapter = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.IdComment);
+                    table.PrimaryKey("PK_UserHistoryChapters", x => new { x.IdUser, x.IdChapter });
                     table.ForeignKey(
-                        name: "FK_Comments_Stories_IdStory",
-                        column: x => x.IdStory,
-                        principalTable: "Stories",
-                        principalColumn: "IdStory",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_UserHistoryChapters_Chapters_IdChapter",
+                        column: x => x.IdChapter,
+                        principalTable: "Chapters",
+                        principalColumn: "IdChapter",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_Users_IdUser",
+                        name: "FK_UserHistoryChapters_Users_IdUser",
                         column: x => x.IdUser,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Topics",
-                columns: table => new
-                {
-                    IdTopic = table.Column<string>(nullable: false),
-                    NameTopic = table.Column<string>(nullable: false),
-                    StoryIdStory = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Topics", x => x.IdTopic);
-                    table.ForeignKey(
-                        name: "FK_Topics_Stories_StoryIdStory",
-                        column: x => x.StoryIdStory,
-                        principalTable: "Stories",
-                        principalColumn: "IdStory",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Chapters_IdStory",
                 table: "Chapters",
                 column: "IdStory");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Chapters_UserId",
-                table: "Chapters",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_IdStory",
@@ -293,19 +340,24 @@ namespace WS.Data.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stories_UserId",
-                table: "Stories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Topics_StoryIdStory",
-                table: "Topics",
-                column: "StoryIdStory");
+                name: "IX_TopicInStory_IdTopic",
+                table: "TopicInStory",
+                column: "IdTopic");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
                 table: "UserClaims",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserHistoryChapters_IdChapter",
+                table: "UserHistoryChapters",
+                column: "IdChapter");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLikeStories_IdStory",
+                table: "UserLikeStories",
+                column: "IdStory");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogins_UserId",
@@ -333,19 +385,22 @@ namespace WS.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Chapters");
-
-            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
-                name: "Topics");
+                name: "TopicInStory");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
+
+            migrationBuilder.DropTable(
+                name: "UserHistoryChapters");
+
+            migrationBuilder.DropTable(
+                name: "UserLikeStories");
 
             migrationBuilder.DropTable(
                 name: "UserLogins");
@@ -357,13 +412,19 @@ namespace WS.Data.Migrations
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "Stories");
+                name: "Topics");
+
+            migrationBuilder.DropTable(
+                name: "Chapters");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Stories");
         }
     }
 }
