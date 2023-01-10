@@ -10,7 +10,7 @@ namespace WS.Application.TopicService
     {
         Task Create(TopicCreateRequest request);
         Task Update(TopicUpdateRequest request);
-        Task Delete(int topicId);
+        Task Delete(string topicId);
         Task<ListTopicResponse> GetAll(ListTopicRequest request);
     }
 }

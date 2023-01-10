@@ -31,5 +31,26 @@ namespace WS.BackendApi.Controllers
             var data = await _service.GetAll(request);
             return Ok(data);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTopic([FromBody] TopicCreateRequest request)
+        {
+            await _service.Create(request);
+            return Ok("Create success");
+        }
+
+        [HttpDelete("{topicId}")]
+        public async Task<IActionResult> DeleteAsync(string topicId)
+        {
+            await _service.Delete(topicId);
+            return Ok("Delete success");
+        }
+
+        [HttpPut("{topicId}")]
+        public async Task<IActionResult> UpdateTopic(TopicUpdateRequest request)
+        {
+            await _service.Update(request);
+            return Ok("Update success");
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace WS.Application.TopicService
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(int topicId)
+        public async Task Delete(string topicId)
         {
             var existTopic = await _dbContext.Topics.FindAsync(topicId);
             if(existTopic is null)
@@ -57,9 +57,14 @@ namespace WS.Application.TopicService
             }
             //paging
             int totalRow = await query.CountAsync();
-            request.Page = 1;
-            request.PageSize = 10;
-            
+            if(request.Page ==0)
+            {
+                request.Page = 1;
+            }
+            if(request.PageSize == 0)
+            {
+                request.PageSize = 10;
+            }            
             var data = query.Skip((request.Page - 1)* request.PageSize).Take(request.PageSize);
             //select and projection
             var pageResult = new ListTopicResponse()
