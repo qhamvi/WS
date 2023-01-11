@@ -43,8 +43,13 @@ namespace WS.BackendApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTopic([FromBody] TopicCreateRequest request)
         {
-            await _service.Create(request);
-            return Ok("Create success");
+            if (ModelState.IsValid is true)
+            {
+                await _service.Create(request);
+                return Ok("Create success");
+            }
+            else return BadRequest();
+            
         }
 
         [HttpDelete("{topicId}")]

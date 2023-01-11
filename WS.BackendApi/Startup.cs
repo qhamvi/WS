@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +16,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks; 
 using WS.Application.TopicService;
+using WS.Application.TopicService.Dtos;
+using WS.Application.TopicService.Validator;
 using WS.Application.UserService;
 using WS.Data.EF;
 using WS.Data.Entities;
@@ -48,9 +52,12 @@ namespace WS.BackendApi
             services.AddTransient<RoleManager<Role>, RoleManager<Role>>();
             services.AddTransient<IUserService, UserService>();
 
+            services.AddTransient<IValidator<TopicCreateRequest>, TopicCreateRequestValidator>();
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
-            services.AddControllers();
+            //1. Add FluentValidation
+            services.AddControllers().AddFluentValidation(
+                v => v.RegisterValidatorsFromAssemblyContaining<TopicCreateRequestValidator>());
 
             services.AddSwaggerGen(c =>
             {
