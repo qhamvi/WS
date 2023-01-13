@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WS.Application", "WS.Applic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WS.Utilities", "WS.Utilities\WS.Utilities.csproj", "{23D578F4-5F46-4E75-9B0D-26414EDE81C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.BackendApi", "WS.BackendApi\WS.BackendApi.csproj", "{8A77E240-9136-4D0E-A671-E5B6A81A4915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WS.BackendApi", "WS.BackendApi\WS.BackendApi.csproj", "{8A77E240-9136-4D0E-A671-E5B6A81A4915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.AdminApp", "WS.AdminApp\WS.AdminApp.csproj", "{F15942D2-A865-469A-A2C1-D7A15BEE076E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{8A77E240-9136-4D0E-A671-E5B6A81A4915}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A77E240-9136-4D0E-A671-E5B6A81A4915}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A77E240-9136-4D0E-A671-E5B6A81A4915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15942D2-A865-469A-A2C1-D7A15BEE076E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15942D2-A865-469A-A2C1-D7A15BEE076E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15942D2-A865-469A-A2C1-D7A15BEE076E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15942D2-A865-469A-A2C1-D7A15BEE076E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
