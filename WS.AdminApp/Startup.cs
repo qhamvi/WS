@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WS.AdminApp.Services;
 using WS.Application.TopicService.Validator;
 
 namespace WS.AdminApp
@@ -27,7 +28,9 @@ namespace WS.AdminApp
         {
             services.AddHttpClient();
             services.AddControllersWithViews().AddFluentValidation(
-                v => v.RegisterValidatorsFromAssemblyContaining<TopicCreateRequestValidator>()); 
+                v => v.RegisterValidatorsFromAssemblyContaining<TopicCreateRequestValidator>());
+            services.AddTransient<IUserApiClient, UserApiClient>();
+
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");  
             var mvcBuilder = services.AddRazorPages();
 

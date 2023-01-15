@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using WS.AdminApp.Services;
 using WS.Application.UserService.Dtos;
 
 namespace WS.AdminApp.Controllers
 {
     public class UserController : Controller
     {
+        private readonly IUserApiClient _userApiClient;
+        public UserController(IUserApiClient userApiClient)
+        {
+            _userApiClient = userApiClient;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -18,13 +25,14 @@ namespace WS.AdminApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             if(!ModelState.IsValid)
             {
                 return View(ModelState);
             }
-            return View();
+            var token = await _userApiClient.Authenticate(request);
+            return View(token);
         }
     }
 }
