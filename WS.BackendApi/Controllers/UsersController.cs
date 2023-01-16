@@ -28,7 +28,7 @@ namespace WS.BackendApi.Controllers
             {
                 return BadRequest("Username or Password is incorrect") ;
             }
-            return Ok(new {token = result});
+            return Ok(result);
         }
 
         [HttpPost("register")]
