@@ -5,6 +5,7 @@ namespace WS.AdminApp.Services
 {
     public interface IUserApiClient
     {
-        Task<string> Authenticate(LoginRequest request); 
+        Task<string> Authenticate(LoginRequest request);
+        Task<ListUserResponse> GetListUser(ListUserRequest request);
     }
 }

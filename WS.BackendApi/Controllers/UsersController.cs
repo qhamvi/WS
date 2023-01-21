@@ -9,6 +9,7 @@ namespace WS.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService _service;
@@ -32,6 +33,8 @@ namespace WS.BackendApi.Controllers
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
             if(!ModelState.IsValid)
@@ -45,5 +48,17 @@ namespace WS.BackendApi.Controllers
             }
             return Ok(new {token = result});
         }
+
+        //http://localhost:8001/api/Users/paging
+        [HttpGet("paging")]
+        public async Task<IActionResult> GetListAsync([FromQuery]ListUserRequest request)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }    
+            var result = await _service.GetListUser(request);
+            return Ok(result);
+        }    
     }
 }

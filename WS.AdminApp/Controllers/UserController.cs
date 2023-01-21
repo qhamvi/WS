@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WS.AdminApp.Services;
 using WS.Application.UserService.Dtos;
+using WS.Utilities.Exceptions;
 
 namespace WS.AdminApp.Controllers
 {
@@ -25,9 +27,19 @@ namespace WS.AdminApp.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string keyword, int pageIndex, int pageSize)
         {
-            return View();
+            var sessions = HttpContext.Session.GetString("Token");
+            var request = new ListUserRequest()
+            {
+                BearerToken = sessions,
+                KeyWord = keyword,
+                Page = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _userApiClient.GetListUser(request);
+            return View(data);
+
         }
 
         [HttpGet]
@@ -35,6 +47,7 @@ namespace WS.AdminApp.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
+            
         }
 
         [HttpPost]
@@ -45,6 +58,14 @@ namespace WS.AdminApp.Controllers
                 return View(ModelState);
             }
             var token = await _userApiClient.Authenticate(request);
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new WSException("Username or Pasword is incorrect");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Token", token);
+            }    
             var userPrincipal = this.ValidateToken(token);
             var authProperties = new AuthenticationProperties
             {
@@ -76,7 +97,10 @@ namespace WS.AdminApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
+
+      
     }
 }

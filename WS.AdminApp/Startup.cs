@@ -34,9 +34,13 @@ namespace WS.AdminApp
                     options.LoginPath = "/User/Login/";
                     options.AccessDeniedPath = "/User/Forbidden/";
                 });
-
+            services.AddSession(options =>
+            {
+                options.IOTimeout = TimeSpan.FromMinutes(1);
+            });
             services.AddControllersWithViews().AddFluentValidation(
                 v => v.RegisterValidatorsFromAssemblyContaining<TopicCreateRequestValidator>());
+            
             services.AddTransient<IUserApiClient, UserApiClient>();
 
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");  
@@ -61,6 +65,7 @@ namespace WS.AdminApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -68,7 +73,6 @@ namespace WS.AdminApp
             app.UseRouting();
 
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

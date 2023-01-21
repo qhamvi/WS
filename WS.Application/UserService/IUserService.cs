@@ -10,5 +10,6 @@ namespace WS.Application.UserService
     {
         Task<string> Authenticate(LoginRequest request);
         Task<bool> Register(RegisterRequest request);
+        Task<ListUserResponse> GetListUser(ListUserRequest request);
     }
 }

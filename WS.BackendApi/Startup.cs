@@ -44,8 +44,8 @@ namespace WS.BackendApi
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
             //Declare DI
-
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<UserManager<User>, UserManager<User>>();
             services.AddTransient<SignInManager<User>, SignInManager<User>>();
@@ -56,8 +56,9 @@ namespace WS.BackendApi
             // Register the Swagger Generator service. This service is responsible for genrating Swagger Documents.
             // Note: Add this service at the end after AddMvc() or AddMvcCore().
             //1. Add FluentValidation
-            services.AddControllers().AddFluentValidation(
-                v => v.RegisterValidatorsFromAssemblyContaining<TopicCreateRequestValidator>());
+            services.AddControllers()
+                .AddFluentValidation(v => v.RegisterValidatorsFromAssemblyContaining<TopicCreateRequestValidator>());
+
 
             services.AddSwaggerGen(c =>
             {
@@ -164,13 +165,19 @@ namespace WS.BackendApi
                 enp.MapControllers();
             });
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
+            });
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
-            //});
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }

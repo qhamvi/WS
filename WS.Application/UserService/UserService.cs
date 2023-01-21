@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,15 +22,18 @@ namespace WS.Application.UserService
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
         public UserService(UserManager<User> userManager, 
             SignInManager<User> signInManager,
             RoleManager<Role> roleManager,
-            IConfiguration config)
+            IConfiguration config,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _config = config;
+            _mapper = mapper;
         }
 
         public async Task<string> Authenticate(LoginRequest request)
@@ -64,6 +70,38 @@ namespace WS.Application.UserService
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        public async Task<ListUserResponse> GetListUser(ListUserRequest request)
+        {
+            var query = _userManager.Users;
+
+            //filter
+            if (!string.IsNullOrEmpty(request.KeyWord))
+            {
+                query = query.Where(v => v.FullName.Contains(request.KeyWord) ||
+                v.PhoneNumber.Contains(request.KeyWord));
+            }
+            //paging
+            int totalRow = await query.CountAsync();
+            if (request.Page == 0)
+            {
+                request.Page = 1;
+            }
+            if (request.PageSize == 0)
+            {
+                request.PageSize = 10;
+            }
+            var data = query.Skip((request.Page - 1) * request.PageSize).Take(request.PageSize);
+            //select and projection
+            var pageResult = new ListUserResponse()
+            {
+                Count = totalRow,
+                Page = request.Page,
+                PageSize = request.PageSize,
+                Results = data.Select(user => _mapper.Map<UserResponse>(user)).ToList()
+            };
+            return pageResult;
+        }
+
         public async Task<bool> Register(RegisterRequest request)
         {
             var user = new User()
@@ -73,7 +111,7 @@ namespace WS.Application.UserService
                 CreateDate = DateTime.Now,
                 PhotoFileName = request.PhotoFileName,
                 Country = request.Country,
-                PhoneNumber = request.Country,
+                PhoneNumber = request.PhoneNumber,
                 Email = request.Email,
                 DOB = request.DayOfBirth
 
