@@ -7,5 +7,8 @@ namespace WS.AdminApp.Services
     {
         Task<string> Authenticate(LoginRequest request);
         Task<ListUserResponse> GetListUser(ListUserRequest request);
+        
+        Task<bool> RegisterUser(RegisterRequest request);
+    
     }
 }
