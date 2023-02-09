@@ -58,7 +58,7 @@ namespace WS.AdminApp.Services
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/api/users/", httpContent);
+            var response = await client.PostAsync($"/api/users/register/", httpContent);
             return response.IsSuccessStatusCode;
         }
     }

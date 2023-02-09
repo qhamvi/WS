@@ -16,7 +16,7 @@ using WS.Utilities.Exceptions;
 
 namespace WS.AdminApp.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserApiClient _userApiClient;
         private readonly IConfiguration _configuration;
@@ -54,7 +54,7 @@ namespace WS.AdminApp.Controllers
         {
             if(!ModelState.IsValid)
             {
-                return View(ModelState);
+                return View();
             }
             var result = await _userApiClient.RegisterUser(registerRequest);
             if(result)
@@ -65,57 +65,7 @@ namespace WS.AdminApp.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Login()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View();
-            
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(ModelState);
-            }
-            var token = await _userApiClient.Authenticate(request);
-            if (string.IsNullOrEmpty(token))
-            {
-                throw new WSException("Username or Pasword is incorrect");
-            }
-            else
-            {
-                HttpContext.Session.SetString("Token", token);
-            }    
-            var userPrincipal = this.ValidateToken(token);
-            var authProperties = new AuthenticationProperties
-            {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60),
-                IsPersistent = true
-            };
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                userPrincipal,
-                authProperties);
-            return RedirectToAction("Index", "Home");
-            //return View(token);
-        }
-        //tra ve object chua thong tin dang nhap
-        private ClaimsPrincipal ValidateToken(string jwtToken)
-        {
-            IdentityModelEventSource.ShowPII = true;
-            SecurityToken validatedToken;
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-            validationParameters.ValidateLifetime = true;
-            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
-            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
-            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
-
-            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtToken, validationParameters,out validatedToken);
-            return principal;
-        }
+        
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
