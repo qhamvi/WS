@@ -104,6 +104,11 @@ namespace WS.Application.UserService
 
         public async Task<bool> Register(RegisterRequest request)
         {
+            //var existUser = await _userManager.FindByEmailAsync(request.Email);
+            //if(existUser != null)
+            //{
+            //    return false;
+            //}
             var user = new User()
             {
                 FullName = request.FullName,
